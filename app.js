@@ -32,13 +32,23 @@ app.use('/users', users);
 
 server.on('connection',function(client){
   console.log("connect");
-  console.log(client);
-  setInterval(function(){
-    client.send("Welcome!");
-  },5000);
+  //console.log(client);
+//  setInterval(function(){
+//    client.send('{"Welcome!"}');
+//  },5000);
+
   client.on('message',function(data){
-    console.log(data);
+    var array = JSON.parse(data);
+    console.log('x = '  + array['x']);
+    console.log('y = '  + array['y']);
+    //if ( array['x'] > 50 && array['y'] > 50 ) {
+      console.log("test");
+      server.clients.forEach(function(client){
+        client.send(JSON.stringify(array));
+      });
+    //}
   });
+
   client.on('disconnect', function(){
     console.log('connection.disconnect');
   });

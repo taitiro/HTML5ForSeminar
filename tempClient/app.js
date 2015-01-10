@@ -2,15 +2,27 @@ var i2c = require('i2c'),
     mqtt = require('mqtt'),
     WebSocket = require('ws'),
     exec = require('child_process').exec,
-//    client = mqtt.connect('mqtt://yourdomain:1883'),
     ADDRESS = 0x5c,
     INTERVAL = 60*1000, // mili-sec
     child,
     flag,
-    ws = new WebSocket('ws://104.155.192.253:3001/');
+    client,
+    ws;
 
-    sensor = new i2c(ADDRESS, {device: '/dev/i2c-1'});
+    function init(){
+      sensor = new i2c(ADDRESS, {device: '/dev/i2c-1'});
+      //client = mqtt.connect('mqtt://yourdomain:1883'),
+      ws = new WebSocket('ws://104.155.192.253:3001/');
+      ws.on('connect',wsOnconnect);
+      ws.on('message',wsOnmessage);
+      ws.on('error',wsOnerror);
+//    readValue(null);
+      console.log("init");
+      exec('echo 2=10% > /dev/servoblaster');
+    }
 
+
+    /*
     // read from ADT7410
     readValue = function(callback) {
       sensor.readBytes(0x00, 2, function(err, data) {
@@ -25,15 +37,25 @@ var i2c = require('i2c'),
           //callback(value);
           });
     };
+    */
 
-    ws.on('message',function(data){
+    function wsOnconnect(){
+      console.log('connect');
+    };
+
+    function wsOnmessage(data){
       console.log('message');
       if(flag){
-        exec('echo 0=30% > /dev/servoblaster');
+        exec('echo 2=30% > /dev/servoblaster');
       }else{
-        exec('echo 0=60% > /dev/servoblaster');
+        exec('echo 2=60% > /dev/servoblaster');
       }
       flag = !flag;
-    });
+    };
 
-//    readValue(null);
+    function wsOnerror(data){
+      exec('echo 2=90% > /dev/servoblaster');
+      console.log('error');
+    };
+
+    init();

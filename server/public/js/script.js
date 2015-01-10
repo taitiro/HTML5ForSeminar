@@ -29,7 +29,7 @@
       canvas.addEventListener("drop", tapCanvas);
     }
     ws = new WebSocket("ws://" + location.hostname + ":3001/");
-    console.log(ws);
+//    console.log(ws);
     ws.onmessage = getMessage;
     ws.onclose = closeOrDisconnect;
     if(SpeechRecognition !== undefined){
@@ -46,7 +46,7 @@
         }
         */
         tempText = e.results[0][0].transcript;
-        console.log(tempText);
+        //console.log(tempText);
         if(tempText !== text && tempText !== ''){
           text = tempText;
           ws.send(JSON.stringify({'text':text}));
@@ -61,7 +61,7 @@
 
   function getMessage(e) {
     var message = JSON.parse(e.data);
-    console.log(e);
+    //console.log(e);
     if((message['id'] !== null) && (message['id'] !== undefined)) {
       socketId = message['id'];
     }
@@ -69,8 +69,8 @@
   };
 
   function closeOrDisconnect(e){
-    console.log("disconnect");
-    console.log(e);
+    //console.log("disconnect");
+    //console.log(e);
   };
 
   function dropCanvas(e){
@@ -84,7 +84,7 @@
       'y' : e.clientY - 100,
       'text' : text
     };
-    console.log(array);
+    //console.log(array);
     if(sheep.style.display !== "none"){
       button.disabled=false;
       sheep.style.display = "none";
@@ -96,7 +96,7 @@
     var i,x,y,
         data = message.users
         temp = message.temp;
-    console.log(message);
+    //console.log(message);
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.fillStyle = '#000000';
     ctx.fillText(temp.toString() + "℃", 30, 10);

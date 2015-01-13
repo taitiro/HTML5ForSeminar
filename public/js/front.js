@@ -42,12 +42,34 @@
   };
 
   function drawSheep(sheeps){
+    var x,y;
     console.log(sheeps);
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#000000';
     for ( uid in sheeps) {
       if(sheeps[uid]['x'] !== undefined) {
-        ctx.drawImage(sheep,sheeps[uid]['x']-50,sheeps[uid]['y']-50,100,100);
+        x = sheeps[uid]['x'];
+        y = sheeps[uid]['y'];
+        ctx.drawImage(sheep,x-50,y-50,100,100);
+        ctx.beginPath();
+        ctx.moveTo(x + 75, y - 125);//x = 75 y = 25
+        ctx.quadraticCurveTo(x + 25, y - 125, x + 25, y - 87.5);
+        ctx.quadraticCurveTo(x + 25, y - 50, x + 50 , y - 50);
+        ctx.quadraticCurveTo(x + 50, y - 30, x + 30, y - 25);
+        ctx.quadraticCurveTo(x + 60, y - 30, x + 75, y - 50);
+        ctx.quadraticCurveTo(x + 125, y - 50, x + 125, y - 87.5);
+        ctx.quadraticCurveTo(x + 125, y - 125, x + 75, y - 125);
+        ctx.stroke();
+        // 塗りの色
+        // フォント
+        ctx.font = "bold 12px 'Arial'";
+        // テキストの行揃え
+        ctx.textAlign = 'left';
+        // テキストのベースライン
+        ctx.textBaseline = 'middle';
+        ctx.fillText("test", x + 50, y - 87.5);
       }
     };
+    ctx.fillStyle = 'rgba(255,255,255,0)';
   }
 })();

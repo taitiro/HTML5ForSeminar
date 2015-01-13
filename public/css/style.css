@@ -12,6 +12,7 @@ canvas#canvas{
   top:0;
   left:0;
   z-index:1;
+  border : 3px ridge #ddd;
 }
 
 img.hidden{

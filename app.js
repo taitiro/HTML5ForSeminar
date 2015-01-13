@@ -4,13 +4,15 @@ var express = require('express'),
   logger = require('morgan'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
-//Websocketモジュールの準備
-  ws = require('websocket.io'),
-//Server変数の準備
-  server= ws.attach(http),
   routes = require('./routes/index'),
   users = require('./routes/users'),
-  app;
+  app,
+  //Websocketモジュールの準備
+  ws = require('websocket.io'),
+  //Server変数の準備
+  server = ws.attach(http),
+  //データ全体を保存する配列の準備
+  users = {};
 
 app = express();
 
@@ -27,33 +29,55 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
 
 
 server.on('connection',function(client){
+  var id = client.req.headers['sec-websocket-key'];
+  users[id] = {
+    "x":undefined,
+    "y":undefined
+  };
   console.log("connect");
+
+  client.send(JSON.stringify({
+    "id" : id,
+    "users" : users
+  }));
   //console.log(client);
 //  setInterval(function(){
 //    client.send('{"Welcome!"}');
 //  },5000);
 
   client.on('message',function(data){
-    var array = JSON.parse(data);
-    console.log('x = '  + array['x']);
-    console.log('y = '  + array['y']);
-    //if ( array['x'] > 50 && array['y'] > 50 ) {
-      console.log("test");
-      server.clients.forEach(function(client){
-        client.send(JSON.stringify(array));
-      });
-    //}
+    var message= JSON.parse(data);
+//    console.log(users);
+//    console.log(message);
+//    console.log(id);
+    users[id]["x"] = message["x"];
+    users[id]["y"] = message["y"];
+//    console.log(users);
+    server.clients.forEach(function(client){
+      client.send(JSON.stringify({'users':users}));
+    });
   });
 
   client.on('disconnect', function(){
+    delete users[id];
     console.log('connection.disconnect');
+    server.clients.forEach(function(client){
+      if (client) {
+        client.send(JSON.stringify({'users':users}));
+      }
+    });
   });
   client.on('close', function(){
+    delete users[id];
     console.log('connection.close');
+    server.clients.forEach(function(client){
+      if (client) {
+        client.send(JSON.stringify({'users':users}));
+      }
+    });
   });
 });
 

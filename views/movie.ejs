@@ -2,14 +2,31 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <meta name="viewport" content="width=500">
+    <link rel="stylesheet" href="/css/style2.css" />
+    <meta name="viewport" content="width=800">
+    <script type="text/javascript">
+      window.onload = function() {
+        var c1 = document.getElementById("comment1");
+        c1.style.display = "block";
+      }
+    </script>
   </head>
   <body>
     <h1><%= title %></h1>
-    <video id="video" poster="/images/sheep.svg" preload="auto" controls autoplay loop muted>
-      <source src="/movies/sheep.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
-      <source src="/movies/sheep.ogv" type='video/ogg; codecs="theora, vorbis"'>
-    </video>
+    <div id="wrapper">
+      <div class="box" id="box-left"></div>
+      <div class="box" id="box-center">
+        <video id="video" class="box" poster="/images/sheep.svg" preload="auto" controls autoplay loop muted>
+          <source src="/movies/sheep.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+          <source src="/movies/sheep.ogv" type='video/ogg; codecs="theora, vorbis"'>
+        </video>
+        <form action="" method="POST">
+          <input type="text" name="comment" id="comment">
+          <input type="submit" value="送信">
+        </form>
+      </div>
+      <div class="box" id="box-right"></div>
+      <div id="comment1">Test</div>
+    </div>
   </body>
 </html>

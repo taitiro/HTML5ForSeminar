@@ -7,11 +7,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/movie', function(req, res) {
-  res.render('movie', { title: 'Express' });
-});
-
-router.post('/movie', function(req, res) {
-  res.render('movie', { title: 'Express' });
+  res.render('movie', { title: 'ふれいま動画' });
 });
 
 

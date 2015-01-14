@@ -1,5 +1,6 @@
 var express = require('express'),
   http = require('http').createServer().listen(3001),
+  http2 = require('http').createServer().listen(3002),
   path = require('path'),
   logger = require('morgan'),
   cookieParser = require('cookie-parser'),
@@ -10,6 +11,7 @@ var express = require('express'),
   ws = require('websocket.io'),
   //Server変数の準備
   server = ws.attach(http),
+  server2 = ws.attach(http2),
   //データ全体を保存する配列の準備
   users = {};
 
@@ -28,7 +30,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-
 
 server.on('connection',function(client){
   var id = client.req.headers['sec-websocket-key'];
@@ -79,6 +80,16 @@ server.on('connection',function(client){
     });
   });
 });
+
+server2.on('connection',function(client){
+  client.on('message',function(data){
+    server2.clients.forEach(function(client){
+      console.log(data);
+      client.send(data);
+    });
+  });
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

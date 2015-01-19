@@ -1,6 +1,12 @@
 body {
-  padding: 50px;
+  margin:0;
+  padding:0;
+  width:100%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+h1{
+  z-index:2;
 }
 
 a {
@@ -9,12 +15,22 @@ a {
 
 canvas#canvas{
   position:absolute;
-  top:0;
+  top:100px;
   left:0;
   z-index:1;
   border : 3px ridge #ddd;
+  background-color:#00FF00;
 }
 
-img.hidden{
-  display:none;
+div#toolbox{
+  position:absolute;
+  top:400px;
+  left:0;
+  margin:10px;
+  padding:5px;
+}
+
+img#sheep{
+  width:100px;
+  height:100px;
 }

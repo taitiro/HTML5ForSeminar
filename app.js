@@ -35,7 +35,8 @@ server.on('connection',function(client){
   var id = client.req.headers['sec-websocket-key'];
   users[id] = {
     "x":undefined,
-    "y":undefined
+    "y":undefined,
+    "text":""
   };
   console.log("connect");
 
@@ -53,8 +54,16 @@ server.on('connection',function(client){
 //    console.log(users);
 //    console.log(message);
 //    console.log(id);
-    users[id]["x"] = message["x"];
-    users[id]["y"] = message["y"];
+    if(message.x !== undefined){
+      users[id]['x'] = message.x;
+    }
+    if(message.y !== undefined){
+      users[id]['y'] = message.y;
+    }
+    if(message.text !== undefined){
+      users[id]['text'] = message.text;
+      console.log(users[id]['text']);
+    }
 //    console.log(users);
     server.clients.forEach(function(client){
       client.send(JSON.stringify({'users':users}));

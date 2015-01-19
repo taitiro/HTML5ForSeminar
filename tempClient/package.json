@@ -1,0 +1,7 @@
+{
+  "name": "tempClient",
+  "version": "0.0.0",
+  "dependencies": {
+    "mqtt": "^1.0.2"
+  }
+}

@@ -1,11 +1,14 @@
 (function(){
   var ws,
   socketId,
-  text = "";
+  text = "",
   canvas = document.getElementById('canvas'),
   sheep = document.getElementById('sheep'),
   button = document.getElementById('speek'),
-  ctx = canvas.getContext('2d');
+  ctx = canvas.getContext('2d'),
+  SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || undefined,
+  isSpeeking = false,
+  recognition;
 
   window.onload = init();
 
@@ -29,7 +32,30 @@
     console.log(ws);
     ws.onmessage = getMessage;
     ws.onclose = closeOrDisconnect;
-    speek.onclick = initSpeek;
+    if(SpeechRecognition !== undefined){
+      recognition = new SpeechRecognition();
+      speek.onclick = initSpeek;
+      recognition.value="ja-JP";
+      //recognition.continuous = true;
+      //recognition.interimResults = true;
+      recognition.onresult = function (e) {
+        var tempText = '';
+        /*
+        for (var i = 0; i < e.results.length; i++) {
+          tempText = e.results[i][0].transcript;
+        }
+        */
+        tempText = e.results[0][0].transcript;
+        console.log(tempText);
+        if(tempText !== text && tempText !== ''){
+          text = tempText;
+          ws.send(JSON.stringify({'text':text}));
+        }
+      };
+    }else{
+      button.textContent="残念！あなたのブラウザは対応外です";
+      button.disabled = true;
+    }
   }
 
 
@@ -60,6 +86,7 @@
     };
     console.log(array);
     if(sheep.style.display !== "none"){
+      button.disabled=false;
       sheep.style.display = "none";
     }
     ws.send(JSON.stringify(array));
@@ -96,30 +123,13 @@
   }
 
   function initSpeek(){
-    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || undefined,
-        recognition;
-    if(SpeechRecognition !== undefined){
-      recognition = new SpeechRecognition();
-      recognition.value="ja-JP";
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.onresult = function (e) {
-        var tempText = '';
-        for (var i = 0; i < e.results.length; i++) {
-          tempText = e.results[i][0].transcript;
-        }
-        console.log(tempText);
-        if(tempText !== text && tempText !== ''){
-          text = tempText;
-          ws.send(JSON.stringify({'text':text}));
-        }
-      };
-      // 音声認識開始
+    if(!isSpeeking){
       recognition.start();
-      button.textContent="話してみよう！";
+      button.textContent="話し終わったらここをクリック";
     }else{
-      button.textContent="残念！あなたのブラウザは対応外です";
+      recognition.stop();
+      button.textContent="話したいならここをクリック";
     }
-    button.disabled = true;
+    isSpeeking = !isSpeeking;
   }
 })();

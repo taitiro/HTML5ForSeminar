@@ -18,7 +18,7 @@ var express = require('express'),
   //MQTTClientの用意
   mqttClient = mqtt.connect(),
   //温度を保存しておく
-  temp = 0;
+  temp = "0";
 app = express();
 
 // view engine setup
@@ -107,7 +107,7 @@ server.on('connection',function(client){
 mqttClient.subscribe('temp');
 
 mqttClient.on('message', function (topic, message) {
-      temp = parseInt(message.toString());
+  temp = message.toString();
 });
 
 

@@ -99,7 +99,7 @@
     //console.log(message);
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.fillStyle = '#000000';
-    ctx.fillText(temp.toString() + "℃", 30, 10);
+    ctx.fillText(temp + "℃", 30, 10);
     for ( uid in data ) {
       if(data[uid]['x'] !== undefined) {
         x = data[uid]['x'];

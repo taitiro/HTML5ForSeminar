@@ -2,12 +2,11 @@ var i2c = require('i2c'),
     mqtt = require('mqtt'),
     WebSocket = require('ws'),
     exec = require('child_process').exec,
-    ADDRESS = 0x5c,
-    INTERVAL = 60*1000, // mili-sec
+    ADDRESS = 0x48,
+    tempValue=0,
     child,
     client,
     flag,
-    tempValue,
     ws;
 
     function init(){
@@ -28,7 +27,6 @@ var i2c = require('i2c'),
     
     // read from ADT7410
     function calTemperature(){
-      /*
       sensor.readBytes(0x00, 2, function(err, data) {
         var temp;
         temp = (data[0] << 8 | data[1]) >> 3;
@@ -36,9 +34,9 @@ var i2c = require('i2c'),
         temp -= 8192;
         }
         tempValue = temp * 0.0625;
-        console.log("Temperature: " + tempValue + " [Deg. C.]");
+        console.log(tempValue + "度");
+        client.publish('temp',tempValue.toString());
       });
-      */
     };
 
     function wsOnconnect(){

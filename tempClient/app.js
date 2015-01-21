@@ -12,8 +12,8 @@ var i2c = require('i2c'),
 
     function init(){
       sensor = new i2c(ADDRESS, {device: '/dev/i2c-1'});
-      console.log(mqtt);
-      client = mqtt.connect('mqtt://yourdomain:1883');
+      client = mqtt.connect('mqtt://104.155.192.253:1883/');
+      //client = mqtt.connect('mqtt://hogehoge.com');
       ws = new WebSocket('ws://104.155.192.253:3001/');
       ws.on('connect',wsOnconnect);
       ws.on('message',wsOnmessage);
@@ -25,6 +25,7 @@ var i2c = require('i2c'),
       setInterval(calTemperature,10000);
     }
 
+    
     // read from ADT7410
     function calTemperature(){
       /*

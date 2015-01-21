@@ -7,6 +7,7 @@ var i2c = require('i2c'),
     child,
     client,
     flag,
+    tempValue,
     ws;
 
     function init(){
@@ -18,28 +19,26 @@ var i2c = require('i2c'),
       ws.on('message',wsOnmessage);
       ws.on('error',wsOnerror);
 //    readValue(null);
-      //client.publish('temp','25');
+      client.publish('temp',tempValue.toString());
       console.log("init");
       exec('echo 2=10% > /dev/servoblaster');
+      setInterval(calTemperature,10000);
     }
 
-
-    /*
     // read from ADT7410
-    readValue = function(callback) {
+    function calTemperature(){
+      /*
       sensor.readBytes(0x00, 2, function(err, data) {
-          var temp, value;
-          console.log(data);
-          temp = (data[0] << 8 | data[1]) >> 3;
-          if (temp >= 4096) {
-          temp -= 8192;
-          }
-          value = temp * 0.0625;
-          console.log("Temperature: " + value + " [Deg. C.]");
-          //callback(value);
-          });
+        var temp;
+        temp = (data[0] << 8 | data[1]) >> 3;
+        if (temp >= 4096) {
+        temp -= 8192;
+        }
+        tempValue = temp * 0.0625;
+        console.log("Temperature: " + tempValue + " [Deg. C.]");
+      });
+      */
     };
-    */
 
     function wsOnconnect(){
       console.log('connect');

@@ -21,18 +21,6 @@ var express = require('express'),
   temp = 0;
 app = express();
 
-mqttClient.subscribe('temp');
-
-
-mqttClient.on('message', function (topic, message) {
-    // message is Buffer
-      console.log(message.toString());
-});
-
-mqttClient.publish('presence', 'Hello mqtt');
-
-//mqttClient.end();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -115,6 +103,13 @@ server.on('connection',function(client){
     });
   });
 });
+
+mqttClient.subscribe('temp');
+
+mqttClient.on('message', function (topic, message) {
+      temp = parseInt(message.toString());
+});
+
 
 server2.on('connection',function(client){
   client.on('message',function(data){

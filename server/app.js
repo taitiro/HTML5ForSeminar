@@ -16,7 +16,7 @@ var express = require('express'),
   //データ全体を保存する配列の準備
   users = {},
   //MQTTClientの用意
-  mqttClient = mqtt.connect();
+  mqttClient = mqtt.connect(),
   //温度を保存しておく
   temp = 0;
 

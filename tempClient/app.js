@@ -11,9 +11,8 @@ var i2c = require('i2c'),
 
     function init(){
       sensor = new i2c(ADDRESS, {device: '/dev/i2c-1'});
-      client = mqtt.connect('mqtt://104.155.192.253:1883/');
-      //client = mqtt.connect('mqtt://hogehoge.com');
-      ws = new WebSocket('ws://104.155.192.253:3001/');
+      client = mqtt.connect('mqtt://example.com/');
+      ws = new WebSocket('ws://example.com/');
       ws.on('connect',wsOnconnect);
       ws.on('message',wsOnmessage);
       ws.on('error',wsOnerror);

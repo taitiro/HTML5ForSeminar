@@ -71,16 +71,19 @@ server.on('connection',function(client){
     }
 //    console.log(users);
     server.clients.forEach(function(client){
-      client.send(JSON.stringify({
-        'users':users,
-        'temp':temp
-      }));
+      if(client !== null && client.send !== null){
+        client.send(JSON.stringify({
+          'users':users,
+          'temp':temp
+        }));
+      }
     });
   });
 
   client.on('disconnect', function(){
     delete users[id];
     console.log('connection.disconnect');
+    /*
     server.clients.forEach(function(client){
       if (client) {
         client.send(JSON.stringify({
@@ -89,9 +92,11 @@ server.on('connection',function(client){
         }));
       }
     });
+    */
   });
   client.on('close', function(){
     delete users[id];
+    /*
     console.log('connection.close');
     server.clients.forEach(function(client){
       if (client) {
@@ -101,6 +106,7 @@ server.on('connection',function(client){
         }));
       }
     });
+    */
   });
 });
 

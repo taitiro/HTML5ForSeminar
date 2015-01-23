@@ -1,12 +1,14 @@
 var express = require('express'),
   http = require('http').createServer().listen(3001),
   http2 = require('http').createServer().listen(3002),
+  basicAuth = require('basic-auth-connect'),
   mqtt = require('mqtt'),
   path = require('path'),
   logger = require('morgan'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   routes = require('./routes/index'),
+  conf = require('config'),
   app,
   //Websocketモジュールの準備
   ws = require('websocket.io'),
@@ -25,6 +27,7 @@ app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(basicAuth(conf.username,conf.password));// ./config/default.jsonファイルのusername・password参照。書き方はdefault_sample.jsonを参照
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));

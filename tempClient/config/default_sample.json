@@ -1,0 +1,4 @@
+{
+  "mqtthost":"localhost/",
+  "wshost":"localhost:3001"
+}

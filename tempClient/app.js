@@ -1,5 +1,6 @@
 var i2c = require('i2c'),
     mqtt = require('mqtt'),
+    conf = require('config'),
     WebSocket = require('ws'),
     exec = require('child_process').exec,
     ADDRESS = 0x48,
@@ -11,8 +12,8 @@ var i2c = require('i2c'),
 
     function init(){
       sensor = new i2c(ADDRESS, {device: '/dev/i2c-1'});
-      client = mqtt.connect('mqtt://example.com/');
-      ws = new WebSocket('ws://example.com/');
+      client = mqtt.connect('mqtt://' + conf.mqtthost);// ./config/default.jsonの値を参照。default.jsonの書き方は同じフォルダのサンプル参照
+      ws = new WebSocket('ws://' + conf.wshost);//同上
       ws.on('connect',wsOnconnect);
       ws.on('message',wsOnmessage);
       ws.on('error',wsOnerror);

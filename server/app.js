@@ -24,7 +24,8 @@ var express = require('express'),
 app = express();
 
 // view engine setup
-app.set('port',3000);
+app.listen(3000);
+console.log(app);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 

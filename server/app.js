@@ -28,7 +28,9 @@ app.set('port',3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(basicAuth(conf.username,conf.password));// ./config/default.jsonファイルのusername・password参照。書き方はdefault_sample.jsonを参照
+if (conf.basic == true){
+  app.use(basicAuth(conf.username,conf.password));// ./config/default.jsonファイルのusername・password参照。書き方はdefault_sample.jsonを参照
+}
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
